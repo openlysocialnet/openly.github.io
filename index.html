@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="OPENLY, la red social para decir lo que piensas. Tu voz, sin ruido.">
+<title>OPENLY · Tu voz, sin ruido</title>
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="styles.css"></head>
+<body class="auth"><div class="shell">
+
+<aside class="side" id="side"><img class="logo" src="logo.png" alt="OPENLY" data-go="feed">
+<nav aria-label="Principal">
+<button data-go="feed" data-n aria-label="Inicio"><i data-i="home"></i><span>Inicio</span></button>
+<button data-go="buscar" data-n aria-label="Buscar"><i data-i="search"></i><span>Buscar</span></button>
+<button data-go="notificaciones" data-n aria-label="Notificaciones"><i data-i="bell"></i><span>Notificaciones</span></button>
+<button data-go="perfil" data-n aria-label="Perfil"><i data-i="user"></i><span>Perfil</span></button>
+<button data-go="ajustes" data-n aria-label="Ajustes"><i data-i="menu"></i><span>Ajustes</span></button>
+</nav>
+<button class="cta" data-go="publicar" aria-label="Publicar"><i data-i="plus"></i><span>Publicar</span></button>
+<div class="chip" id="chip"></div></aside>
+
+<main class="main">
+<div class="brand"><img class="bl" src="logo.png" alt="OPENLY"><h2>Tu voz, sin ruido.</h2><p>Publica lo que piensas, sigue a quien te interesa y conversa en un espacio limpio.</p></div>
+
+<section class="screen on" id="registro"><header class="top"><img class="logo" src="logo.png" alt="OPENLY"></header><div class="body">
+<h1>Crea tu cuenta</h1><p class="m">Tu voz, sin ruido.</p>
+<label class="in"><input id="rE" type="email" placeholder="Correo electrónico" autocomplete="email"></label>
+<label class="in"><input id="rP" type="password" placeholder="Contraseña (mín. 6)" autocomplete="new-password"></label>
+<label class="in"><input id="rU" placeholder="@usuario único" autocapitalize="none" autocomplete="username"></label>
+<p class="m" id="rOk"></p><div class="grow"></div>
+<button class="btn" id="bReg">Registrarse</button>
+<p class="m c">¿Ya tienes cuenta? <a href="#" data-go="login">Iniciar sesión</a></p></div></section>
+
+<section class="screen" id="login"><header class="top"><img class="logo" src="logo.png" alt="OPENLY"></header><div class="body">
+<h1>Bienvenido de nuevo</h1><p class="m">Inicia sesión para continuar.</p>
+<label class="in"><input id="lE" type="email" placeholder="Correo electrónico" autocomplete="email"></label>
+<label class="in"><input id="lP" type="password" placeholder="Contraseña" autocomplete="current-password"></label>
+<a class="m r" href="#" data-go="recuperar">Recuperar contraseña</a><div class="grow"></div>
+<button class="btn" id="bLog">Iniciar sesión</button><button class="btn o" data-go="registro">Crear cuenta</button></div></section>
+
+<section class="screen" id="recuperar"><header class="top"><button class="ib" data-go="login" aria-label="Volver"><i data-i="back"></i></button></header><div class="body">
+<h1>Recuperar contraseña</h1><p class="m">Te enviamos un código a tu correo.</p>
+<label class="in"><input id="cE" type="email" placeholder="Correo electrónico"></label>
+<button class="btn o" id="bCode" style="margin:0">Enviar código</button>
+<label class="in"><input id="cC" placeholder="Código de 6 dígitos" inputmode="numeric"></label>
+<label class="in"><input id="cP" type="password" placeholder="Nueva contraseña"></label>
+<div class="grow"></div><button class="btn" id="bReset" style="margin-bottom:28px">Cambiar contraseña</button></div></section>
+
+<section class="screen" id="feed"><header class="top"><img class="logo" src="logo.png" alt="OPENLY"><h2 class="dt">Inicio</h2><div class="row"><button class="ib" id="bRef" aria-label="Actualizar"><i data-i="refresh"></i></button><button class="ib mo" data-go="ajustes" aria-label="Menú"><i data-i="menu"></i></button></div></header>
+<div class="tabs" id="feedTabs"><button class="on" data-tab="todos">Para ti</button><button data-tab="siguiendo">Siguiendo</button></div>
+<div class="scroll" id="feedList"></div></section>
+
+<section class="screen" id="publicar"><header class="top"><button class="ib" data-go="feed" aria-label="Cerrar"><i data-i="x"></i></button><button class="pill" id="bPub">Publicar</button></header>
+<div class="body row"><div id="pubAv"></div><div class="grow col"><textarea id="pTxt" placeholder="¿Qué quieres decir?" maxlength="280"></textarea><div id="pPrev"></div></div></div>
+<footer class="bar"><button class="ib" id="bImg" aria-label="Adjuntar imagen"><i data-i="img"></i></button><input type="file" id="pFile" accept="image/*" hidden><span class="m" id="pCnt">0 / 280</span></footer></section>
+
+<section class="screen" id="detalle"><header class="top"><button class="ib" data-go="feed" aria-label="Volver"><i data-i="back"></i></button><h2>Publicación</h2><span style="width:24px"></span></header>
+<div class="scroll" id="detalleList"></div>
+<footer class="bar"><label class="in grow pillin" style="height:44px"><input id="cTxt" placeholder="Escribe un comentario" maxlength="280"></label><button class="pill" id="bCom">Enviar</button></footer></section>
+
+<section class="screen" id="buscar"><header class="top"><img class="logo" src="logo.png" alt="OPENLY"><h2 class="dt">Buscar</h2></header>
+<div class="body" style="flex:none"><label class="in pillin"><i data-i="search"></i><input id="qIn" placeholder="Buscar usuarios o @usuario" autocapitalize="none"></label><h2>Personas</h2></div>
+<div class="scroll" id="people"></div></section>
+
+<section class="screen" id="notificaciones"><header class="top lo"><img class="logo" src="logo.png" alt="OPENLY"></header>
+<div class="body" style="flex:none"><h1 class="s">Notificaciones</h1></div><div class="scroll" id="notifs"></div></section>
+
+<section class="screen" id="perfil"><header class="top"><img class="logo" src="logo.png" alt="OPENLY"><h2 class="dt">Perfil</h2><button class="ib mo" data-go="ajustes" aria-label="Menú"><i data-i="menu"></i></button></header>
+<div class="body" style="flex:none;gap:10px"><div class="row sb"><div id="pAv"></div><button class="pill" id="pBtn"></button></div>
+<div><h2 class="l" id="pNom"></h2><p class="m" id="pUsr"></p></div><p id="pBio"></p><p class="stats" id="pSt"></p></div>
+<div class="tabs"><button class="on">Publicaciones</button></div><div class="scroll" id="mine"></div></section>
+
+<section class="screen" id="editar"><header class="top"><button class="ib" data-go="perfil" aria-label="Volver"><i data-i="back"></i></button><h2>Editar perfil</h2><span style="width:24px"></span></header>
+<div class="body"><div class="row" style="gap:16px;align-items:center"><div id="eAv"></div><button class="pill o" id="bFoto">Cambiar foto</button><input type="file" id="eFile" accept="image/*" hidden></div>
+<label class="in"><input id="eNom" placeholder="Nombre" maxlength="40"></label>
+<label class="in" style="height:auto;padding:12px 16px"><textarea id="eBio" placeholder="Biografía" maxlength="160" style="min-height:80px;font-size:15px"></textarea></label>
+<div class="grow"></div><button class="btn" id="bSave" style="margin-bottom:28px">Guardar</button></div></section>
+
+<section class="screen" id="ajustes"><header class="top"><button class="ib" data-go="feed" aria-label="Volver"><i data-i="back"></i></button><h2>Ajustes</h2><span style="width:24px"></span></header>
+<div class="scroll"><a class="item" href="#" data-go="perfil">Mi perfil</a><a class="item" href="#" data-act="editar">Editar perfil</a><a class="item danger" href="#" data-act="logout">Cerrar sesión</a></div></section>
+
+<nav class="nav" id="nav" aria-label="Principal"><button data-go="feed" data-n aria-label="Inicio"><i data-i="home"></i></button><button data-go="buscar" data-n aria-label="Buscar"><i data-i="search"></i></button><button data-go="publicar" aria-label="Publicar"><i data-i="plus"></i></button><button data-go="notificaciones" data-n aria-label="Notificaciones"><i data-i="bell"></i></button><button data-go="perfil" data-n aria-label="Perfil"><i data-i="user"></i></button></nav>
+</main>
+
+<aside class="rail" id="rail"><label class="in pillin"><i data-i="search"></i><input id="rq" placeholder="Buscar personas" autocapitalize="none"></label>
+<div class="box"><h2>A quién seguir</h2><div id="sug"></div></div></aside>
+</div>
+<div id="toast" role="status"></div>
+<script src="config.js"></script><script src="app.js"></script></body></html>
