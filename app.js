@@ -55,7 +55,7 @@ function openEditar(){go('editar');S.foto='';$('eAv').innerHTML=av(S.me,'big');$
 
 document.addEventListener('click',e=>{
   const t=e.target,q=s=>t.closest(s);
-  let el;if(t.closest('a'))e.preventDefault();
+  let el;if(t.closest('a[href="#"]'))e.preventDefault();
   if(el=q('[data-act]')){const a=el.dataset.act;if(a==='editar')openEditar();if(a==='logout')run(async()=>{await api('logout').catch(()=>0);localStorage.removeItem('ol_token');S.token=S.me=null;go('login')});return}
   if(el=q('[data-go]')){const g=el.dataset.go;g==='perfil'?run(()=>openPerfil(S.me.usuario)):go(g);return}
   if(el=q('#pBtn')){if(el.dataset.me)return openEditar();run(async()=>{const s=await api('seguir',{usuario:el.dataset.u});el.textContent=s?'Siguiendo':'Seguir';el.classList.toggle('o',s)});return}
