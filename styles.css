@@ -67,6 +67,9 @@ img.img{display:block;width:100%;height:auto;max-height:380px;object-fit:cover}
 button:disabled{opacity:.5}
 .n{cursor:pointer}
 .stats{font-size:14px}
+.leg{text-align:center;font-size:13px;padding:0 0 calc(env(safe-area-inset-bottom) + 28px)}
+.leg a{text-decoration:underline;text-underline-offset:3px}.leg a:hover{color:#fff}
+#registro .c{padding-bottom:12px}#login .btn.o{margin-bottom:12px}
 
 /* ---------- Web responsivo ---------- */
 *{scrollbar-width:thin;scrollbar-color:#2a2a2a transparent}
@@ -91,6 +94,7 @@ body.auth .main{align-items:stretch}
  body.auth .btn.o,body.auth .c{margin-bottom:0;padding-bottom:0}
  body.auth #bReset{margin-bottom:0!important}
  body.auth .btn{margin-top:6px}
+ body.auth .leg{padding:8px 0 0}
  .top{padding:16px 20px 14px}
  .screen:not(#registro):not(#login):not(#recuperar)>.top{border-bottom:1px solid var(--line)}
  body:not(.auth) .top .logo,body:not(.auth) .top.lo{display:none}
