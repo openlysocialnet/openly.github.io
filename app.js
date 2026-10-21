@@ -3,7 +3,7 @@ const svg=(n,s=24)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="n
 document.querySelectorAll('i[data-i]').forEach(e=>e.outerHTML=svg(e.dataset.i,e.closest('.nav')?26:24));
 
 const $=id=>document.getElementById(id), API=window.OPENLY_API_URL;
-const S={token:localStorage.getItem('ol_token'),me:null,tab:'todos',pid:null,img:'',foto:''};
+const S={token:localStorage.getItem('ol_token'),me:null,pid:null,img:'',foto:''};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const ago=t=>{const s=(Date.now()-t)/1e3;return s<60?'ahora':s<3600?Math.floor(s/60)+' min':s<86400?Math.floor(s/3600)+' h':Math.floor(s/86400)+' d'};
 async function api(a,d={}){
@@ -31,7 +31,7 @@ function go(id){
   if(h)run(h);
 }
 function start(d){S.token=d.token;localStorage.setItem('ol_token',d.token);S.me=d.yo;go('feed')}
-async function loadFeed(){$('feedList').innerHTML=list((await api('feed',{tab:S.tab})).map(post),S.tab==='siguiendo'?'Sigue a alguien para ver sus publicaciones':'Aún no hay publicaciones')}
+async function loadFeed(){$('feedList').innerHTML=list((await api('feed')).map(post),'Aún no hay publicaciones')}
 async function openPerfil(usuario){
   go('perfil');const u=await api('perfil',{usuario});
   $('pAv').innerHTML=av(u,'big');$('pNom').textContent=u.nombre;$('pUsr').textContent='@'+u.usuario;$('pBio').textContent=u.bio;
@@ -65,7 +65,6 @@ document.addEventListener('click',e=>{
   if(el=q('.del')){if(confirm('¿Eliminar esta publicación?'))run(async()=>{await api('eliminar',{pid:q('[data-pid]').dataset.pid});S.pid&&$('detalle').classList.contains('on')?go('feed'):q('[data-pid]').remove()});return}
   if(el=q('[data-user]')){run(()=>openPerfil(el.dataset.user));return}
   if(el=q('[data-open]')){const p=q('[data-pid]');if(p&&!($('detalle').classList.contains('on')))run(()=>openDetalle(p.dataset.pid));return}
-  if(el=q('#feedTabs [data-tab]')){S.tab=el.dataset.tab;document.querySelectorAll('#feedTabs button').forEach(b=>b.classList.toggle('on',b===el));run(loadFeed)}
 });
 $('bRef').onclick=()=>run(loadFeed);
 let tm;$('rU').oninput=e=>{clearTimeout(tm);const v=e.target.value;tm=setTimeout(()=>{if(v.length<3){$('rOk').textContent='';return}api('disponible',{usuario:v}).then(ok=>$('rOk').textContent=ok?'@'+v.toLowerCase().replace('@','')+' disponible':'No disponible').catch(()=>0)},400)};
@@ -76,7 +75,7 @@ $('bReset').onclick=e=>run(async()=>{await api('reset',{email:$('cE').value,codi
 $('pTxt').oninput=e=>$('pCnt').textContent=e.target.value.length+' / 280';
 $('bImg').onclick=()=>$('pFile').click();
 $('pFile').onchange=e=>run(async()=>{const f=e.target.files[0];if(!f)return;S.img=await shrink(f);$('pPrev').innerHTML=`<img class="img" src="${S.img}" alt="">`});
-$('bPub').onclick=e=>run(async()=>{await api('publicar',{texto:$('pTxt').value,imagen:S.img});$('pTxt').value='';$('pCnt').textContent='0 / 280';$('pPrev').innerHTML='';S.img='';S.tab='todos';document.querySelectorAll('#feedTabs button').forEach((b,i)=>b.classList.toggle('on',!i));go('feed')},e.currentTarget);
+$('bPub').onclick=e=>run(async()=>{await api('publicar',{texto:$('pTxt').value,imagen:S.img});$('pTxt').value='';$('pCnt').textContent='0 / 280';$('pPrev').innerHTML='';S.img='';go('feed')},e.currentTarget);
 $('bCom').onclick=e=>run(async()=>{const v=$('cTxt').value;if(!v.trim())return;await api('comentar',{pid:S.pid,texto:v});$('cTxt').value='';await openDetalle(S.pid)},e.currentTarget);
 let tq;$('qIn').oninput=()=>{clearTimeout(tq);tq=setTimeout(()=>run(buscar),350)};
 $('bFoto').onclick=()=>$('eFile').click();
