@@ -19,12 +19,12 @@ function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');clear
 const run=async(f,b)=>{try{if(b)b.disabled=true;await f()}catch(e){toast(e.message||'Error de conexión')}finally{if(b)b.disabled=false}};
 const shrink=(f,m=1000)=>new Promise((ok,no)=>{const i=new Image,u=URL.createObjectURL(f);i.onload=()=>{const k=Math.min(1,m/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=i.width*k;c.height=i.height*k;c.getContext('2d').drawImage(i,0,0,c.width,c.height);URL.revokeObjectURL(u);ok(c.toDataURL('image/jpeg',.8))};i.onerror=()=>no(new Error('Imagen inválida'));i.src=u});
 
-const av=(u,c='')=>`<div class="av ${c}" data-user="${esc(u.usuario)}" ${u.foto?`style="background-image:url('${esc(u.foto)}')"`:''}>${u.foto?'':esc((u.nombre||u.usuario||'?').slice(0,2).toUpperCase())}</div>`;
+const av=(u,c='')=>`<div class="av ${c}" data-user="${esc(u?u.usuario:'')}" ${u&&u.foto?`style="background-image:url('${esc(u.foto)}')"`:''}>${u&&u.foto?'':esc(((u?u.nombre||u.usuario:'')||'?').slice(0,2).toUpperCase())}</div>`;
 const post=p=>`<article class="p" data-pid="${p.id}">${av(p.autor)}<div class="pc"><div class="pn"><b data-user="${esc(p.autor.usuario)}">${esc(p.autor.nombre)}</b><span class="m">@${esc(p.autor.usuario)} · ${ago(p.fecha)}</span>${p.es_mio?`<button class="del" aria-label="Eliminar">${svg('trash',18)}</button>`:''}</div><div class="tx" data-open>${esc(p.texto)}</div>${p.imagen?`<img class="img" src="${esc(p.imagen)}" alt="" data-open>`:''}<div class="ac"><button class="like${p.mio?' on':''}">${svg('heart',19)}<span>${p.likes}</span></button><button data-open>${svg('chat',19)} ${p.comentarios}</button></div></div></article>`;
 const list=(a,empty)=>a.length?a.join(''):`<p class="m c e">${empty}</p>`;
 
 const AUTH=['registro','login','recuperar'],SUB=['publicar','detalle','editar','ajustes'];
-const chip=()=>{const c=$('chip');c.dataset.user=S.me.usuario;c.innerHTML=av(S.me)+`<div><b>${esc(S.me.nombre)}</b><span class="m">@${esc(S.me.usuario)}</span></div>`};
+const chip=()=>{if(!S.me)return;const c=$('chip');if(!c)return;c.dataset.user=S.me.usuario;c.innerHTML=av(S.me)+`<div><b>${esc(S.me.nombre)}</b><span class="m">@${esc(S.me.usuario)}</span></div>`};
 const sugList=a=>{$('sug').innerHTML=a.filter(u=>!u.yo_sigo).slice(0,5).map(u=>`<div class="row2">${av(u)}<div class="grow"><b data-user="${esc(u.usuario)}">${esc(u.nombre)}</b><span class="m">@${esc(u.usuario)}</span></div><button class="pill follow" data-u="${esc(u.usuario)}">Seguir</button></div>`).join('')||'<p class="m e">Ya sigues a todos por ahora.</p>'};
 const home=d=>{S.me=d.yo;chip();$('feedList').innerHTML=list(d.feed.map(post),'Aún no hay publicaciones');sugList(d.sug)};
 function go(id){
@@ -32,12 +32,13 @@ function go(id){
   document.body.classList.toggle('auth',AUTH.includes(id));document.body.classList.toggle('sub',SUB.includes(id));
   document.querySelectorAll('[data-n]').forEach(b=>b.classList.toggle('on',b.dataset.go===id));
   if(S.me&&!AUTH.includes(id))chip();
-  const h={feed:()=>swr('home',()=>api('inicio'),home),buscar:()=>buscar(),notificaciones:loadNotifs,publicar:()=>{$('pubAv').innerHTML=av(S.me)}}[id];
+  const h={feed:()=>swr('home',()=>api('inicio'),home),buscar:()=>buscar(),notificaciones:loadNotifs,publicar:()=>{if(S.me)$('pubAv').innerHTML=av(S.me)}}[id];
   if(h)run(h);
 }
 function start(d){S.token=d.token;localStorage.setItem('ol_token',d.token);S.me=d.yo;go('feed')}
 const loadFeed=()=>{stale('home');return swr('home',()=>api('inicio'),home)};
 async function openPerfil(usuario){
+  if(!usuario)return;
   go('perfil');const k='p_'+usuario;if(!K[k]){$('pNom').textContent='';$('pUsr').textContent='';$('pBio').textContent='';$('pSt').innerHTML='';$('mine').innerHTML='';$('pAv').innerHTML=''}
   await swr(k,()=>api('perfil',{usuario}),u=>{
   $('pAv').innerHTML=av(u,'big');$('pNom').textContent=u.nombre;$('pUsr').textContent='@'+u.usuario;$('pBio').textContent=u.bio;
@@ -57,13 +58,20 @@ async function loadNotifs(){
   const T={like:'le gustó tu publicación',comment:'comentó tu publicación',follow:'empezó a seguirte'};
   $('notifs').innerHTML=list((await api('notifs')).map(n=>`<div class="n" ${n.pid?`data-pid="${n.pid}" data-open`:`data-user="${esc(n.de.usuario)}"`}>${svg(n.tipo==='follow'?'user':n.tipo==='like'?'heart':'chat',22)}${av(n.de)}<div><b>${esc(n.de.nombre)}</b> ${T[n.tipo]||''}<div class="m">${ago(n.fecha)}</div></div></div>`),'Aún no tienes notificaciones');
 }
-function openEditar(){go('editar');S.foto='';$('eAv').innerHTML=av(S.me,'big');$('eNom').value=S.me.nombre;$('eBio').value=S.me.bio||''}
+function openEditar(){if(!S.me)return;go('editar');S.foto='';$('eAv').innerHTML=av(S.me,'big');$('eNom').value=S.me.nombre;$('eBio').value=S.me.bio||''}
 
 document.addEventListener('click',e=>{
   const t=e.target,q=s=>t.closest(s);
   let el;if(t.closest('a[href="#"]'))e.preventDefault();
   if(el=q('[data-act]')){const a=el.dataset.act;if(a==='editar')openEditar();if(a==='logout')run(async()=>{await api('logout').catch(()=>0);out()});return}
-  if(el=q('[data-go]')){const g=el.dataset.go;g==='perfil'?run(()=>openPerfil(S.me.usuario)):go(g);return}
+  if(el=q('[data-go]')){
+    const g=el.dataset.go;
+    if(g==='perfil'){
+      if(S.me&&S.me.usuario)run(()=>openPerfil(S.me.usuario));
+      else toast('Cargando datos...');
+    }else go(g);
+    return;
+  }
   if(el=q('#pBtn')){if(el.dataset.me)return openEditar();run(async()=>{const s=await api('seguir',{usuario:el.dataset.u});el.textContent=s?'Siguiendo':'Seguir';el.classList.toggle('o',s);for(const k in K)if(k[0]=='p')delete K[k]});return}
   if(el=q('.follow')){run(async()=>{const s=await api('seguir',{usuario:el.dataset.u});el.textContent=s?'Siguiendo':'Seguir';el.classList.toggle('o',s);for(const k in K)if(k[0]=='p')delete K[k]});return}
   if(el=q('.like')){const sp=el.querySelector('span'),on=!el.classList.contains('on');el.classList.toggle('on',on);sp.textContent=+sp.textContent+(on?1:-1);
@@ -81,13 +89,13 @@ $('pTxt').oninput=e=>$('pCnt').textContent=e.target.value.length+' / 280';
 $('bImg').onclick=()=>$('pFile').click();
 $('pFile').onchange=e=>run(async()=>{const f=e.target.files[0];if(!f)return;S.img=await shrink(f);$('pPrev').innerHTML=`<img class="img" src="${S.img}" alt="">`});
 $('bPub').onclick=e=>run(async()=>{await api('publicar',{texto:$('pTxt').value,imagen:S.img});$('pTxt').value='';$('pCnt').textContent='0 / 280';$('pPrev').innerHTML='';S.img='';stale('home');go('feed')},e.currentTarget);
-$('bCom').onclick=e=>run(async()=>{const v=$('cTxt').value;if(!v.trim())return;$('cTxt').value='';$('detalleList').insertAdjacentHTML('beforeend',`<div class="p">${av(S.me)}<div class="pc"><div class="pn"><b>${esc(S.me.nombre)}</b><span class="m">@${esc(S.me.usuario)} · ahora</span></div><div class="tx">${esc(v)}</div></div></div>`);await api('comentar',{pid:S.pid,texto:v});stale('home')},e.currentTarget);
+$('bCom').onclick=e=>run(async()=>{const v=$('cTxt').value;if(!v.trim())return;$('cTxt').value='';if(S.me)$('detalleList').insertAdjacentHTML('beforeend',`<div class="p">${av(S.me)}<div class="pc"><div class="pn"><b>${esc(S.me.nombre)}</b><span class="m">@${esc(S.me.usuario)} · ahora</span></div><div class="tx">${esc(v)}</div></div></div>`);await api('comentar',{pid:S.pid,texto:v});stale('home')},e.currentTarget);
 let tq;$('qIn').oninput=()=>{clearTimeout(tq);tq=setTimeout(()=>run(buscar),350)};
 $('bFoto').onclick=()=>$('eFile').click();
 $('eFile').onchange=e=>run(async()=>{const f=e.target.files[0];if(!f)return;S.foto=await shrink(f,400);$('eAv').innerHTML=av({...S.me,foto:S.foto},'big')});
 $('bSave').onclick=e=>run(async()=>{for(const k in K)if(k[0]=='p')delete K[k];stale('home');S.me=await api('editar',{nombre:$('eNom').value,bio:$('eBio').value,foto:S.foto});await openPerfil(S.me.usuario)},e.currentTarget);
 
-(async()=>{if(!S.token)return go('registro');try{if(K.home){S.me=K.home.yo;go('feed')}else{const d=await api('inicio');K.home=d;KT.home=Date.now();S.me=d.yo;go('feed')}}catch(x){if(!S.token)return;if(/Falta la URL/.test(x.message))toast(x.message);else if(!K.home){localStorage.removeItem('ol_token');go('login')}}})();
+(async()=>{if(!S.token)return go('registro');try{if(K.home&&K.home.yo){S.me=K.home.yo;go('feed')}else{const d=await api('inicio');K.home=d;KT.home=Date.now();S.me=d.yo;go('feed')}}catch(x){if(!S.token)return;if(/Falta la URL/.test(x.message))toast(x.message);else{localStorage.removeItem('ol_token');localStorage.removeItem('ol_home');go('login')}}})();
 
 const ENT={lE:'bLog',lP:'bLog',rE:'bReg',rP:'bReg',rU:'bReg',cC:'bReset',cP:'bReset',cTxt:'bCom'};
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&ENT[e.target.id]){e.preventDefault();$(ENT[e.target.id]).click()}});
