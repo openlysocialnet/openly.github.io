@@ -1,27 +1,31 @@
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#0B0B0B">
 <title>Política de privacidad · OPENLY</title>
 <link rel="icon" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600;700&display=swap">
 <style>
+:root{--lime:#B8FF3B;--bg:#0B0B0B;--fg:#F5F5F2;--mu:#8B908A;--line:#2A2E29;--tx:#D2D5CF}
 *{box-sizing:border-box;margin:0}
-html{background:#000}
-body{font-family:'Inter Tight',-apple-system,'Helvetica Neue',Arial,sans-serif;color:#fff;background:#000;line-height:1.6;-webkit-text-size-adjust:100%}
-.wrap{max-width:720px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 20px) 20px calc(env(safe-area-inset-bottom) + 56px)}
-.top{display:flex;align-items:center;justify-content:space-between;padding-bottom:20px;border-bottom:1px solid #1f1f1f}
-.top img{height:32px;width:auto}
-.top a{color:#8a8a8a;font-size:14px;text-decoration:none}.top a:hover{color:#fff}
-h1{font-size:30px;font-weight:700;letter-spacing:-.8px;line-height:1.15;margin-top:28px}
-.sub{color:#8a8a8a;font-size:14px;margin:6px 0 28px}
-h2{font-size:20px;font-weight:700;margin:36px 0 10px;letter-spacing:-.3px}
+html{background:var(--bg)}
+body{font-family:'Inter Tight',-apple-system,'Helvetica Neue',Arial,sans-serif;color:var(--fg);background:radial-gradient(circle at 12% 0%,rgba(184,255,59,.09),transparent 55%) fixed,var(--bg);min-height:100vh;line-height:1.6;-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 24px) 20px calc(env(safe-area-inset-bottom) + 64px)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.top img{height:clamp(52px,9vw,76px);width:auto;display:block}
+.top a{color:var(--mu);font-size:14px;text-decoration:none;padding:8px 14px;border:1px solid var(--line);border-radius:999px;white-space:nowrap;transition:color .15s,border-color .15s}
+.top a:hover{color:var(--lime);border-color:var(--lime)}
+h1{font-size:clamp(26px,5vw,34px);font-weight:700;letter-spacing:-.04em;line-height:1.15;margin-top:32px}
+.sub{color:var(--mu);font-size:14px;margin:8px 0 28px}
+h2{font-size:20px;font-weight:700;margin:40px 0 10px;letter-spacing:-.02em}
 h3{font-size:16px;font-weight:700;margin:24px 0 8px}
-p{margin:0 0 14px;color:#d6d6d6;font-size:15px}
-strong{color:#fff;font-weight:700}
-ul,ol{margin:0 0 14px;padding-left:22px;color:#d6d6d6;font-size:15px}li{margin-bottom:6px}
-a:focus-visible{outline:2px solid #fff;outline-offset:2px}
+p{margin:0 0 14px;color:var(--tx);font-size:15px}
+strong{color:var(--fg);font-weight:700}
+ul,ol{margin:0 0 14px;padding-left:22px;color:var(--tx);font-size:15px}li{margin-bottom:6px}li::marker{color:var(--lime)}
+p a,li a{color:var(--lime)}
+a:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+::selection{background:var(--lime);color:#0B0B0B}
 </style></head>
 <body><div class="wrap">
 <header class="top"><img src="logo.png" alt="OPENLY"><a href="index.html">← Volver a OPENLY</a></header>
