@@ -14,7 +14,7 @@ svg{display:block}
 .logo{display:inline-flex;align-items:center;gap:8px;line-height:1}
 .logo img{width:30px;height:30px;flex:none}
 .logo b{font-size:22px;font-weight:700;letter-spacing:-.045em}
-.logo.bl img{width:56px;height:56px}.logo.bl b{font-size:44px}
+.logo.bl img{width:clamp(88px,10vw,140px);height:auto}.logo.bl b{font-size:44px}
 /* estructura */
 .shell{display:flex;justify-content:center;height:100dvh;background:var(--bg)}
 .main{position:relative;flex:1 1 auto;width:100%;min-width:0;display:flex;flex-direction:column;background:var(--bg);overflow:hidden}
