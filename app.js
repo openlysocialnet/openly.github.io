@@ -89,6 +89,5 @@ $('bSave').onclick=e=>run(async()=>{for(const k in K)if(k[0]=='p')delete K[k];st
 
 (async()=>{if(!S.token)return go('registro');try{if(K.home){S.me=K.home.yo;go('feed')}else{const d=await api('inicio');K.home=d;KT.home=Date.now();S.me=d.yo;go('feed')}}catch(x){if(!S.token)return;if(/Falta la URL/.test(x.message))toast(x.message);else if(!K.home){localStorage.removeItem('ol_token');go('login')}}})();
 
-let tr;$('rq').oninput=e=>{clearTimeout(tr);tr=setTimeout(()=>{if(!e.target.value.trim())return;$('qIn').value=e.target.value;go('buscar')},400)};
 const ENT={lE:'bLog',lP:'bLog',rE:'bReg',rP:'bReg',rU:'bReg',cC:'bReset',cP:'bReset',cTxt:'bCom'};
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&ENT[e.target.id]){e.preventDefault();$(ENT[e.target.id]).click()}});
