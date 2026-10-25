@@ -143,3 +143,5 @@ body.auth .main{align-items:stretch}
  .box{display:block;margin:16px 0;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--sf);padding:14px 0 6px}
  .box h2{padding:0 20px 6px}.box .row2{padding:10px 14px;gap:10px}.box .av{width:36px;height:36px}.box .grow{min-width:0}.box .grow b,.box .grow span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.box .pill{padding:0 12px;flex:none}.box .row2:nth-child(n+4){display:none}
 }
+
+#buscar>.body{padding-top:16px}
